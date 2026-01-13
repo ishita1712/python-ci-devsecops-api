@@ -18,6 +18,13 @@ jobs:
         run: |
           docker build -t fastapi-demo .
 
+      - name: Scan Docker image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: fastapi-demo
+          severity: HIGH,CRITICAL
+          exit-code: 1
+
       - name: Run container
         run: |
           docker run -d -p 8000:8000 --name fastapi-test fastapi-demo
